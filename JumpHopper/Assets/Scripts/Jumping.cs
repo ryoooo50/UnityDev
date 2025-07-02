@@ -15,6 +15,8 @@ public class Jumping : MonoBehaviour
     private float vertical;
     private bool isGrounded;
 
+    private BoardDriven isOnPlatform;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,7 +42,35 @@ public class Jumping : MonoBehaviour
     void FixedUpdate() 
     {
         Vector3 move = new Vector3(horizontal, 0f, vertical) * speed * Time.fixedDeltaTime;
+
+        Vector3 platformDelta = Vector3.zero;
+        if (isOnPlatform != null && isGrounded)
+        {
+            platformDelta = isOnPlatform.delta;
+
+            if (platformDelta.y < 0)
+            {
+                rb.MovePosition(rb.position + new Vector3(0, platformDelta.y, 0));
+            }
+        }
         
-        rb.MovePosition(rb.position + move);
+        rb.MovePosition(rb.position + move + platformDelta);
+    }
+
+    private void OnCollisionStay(Collision collision) 
+    {
+        if (collision.gameObject.CompareTag("MovingPlatform"))
+        {
+            isOnPlatform = collision.gameObject.GetComponent<BoardDriven>();
+        }
+        
+    }
+    private void OnCollisionExit(Collision collision) 
+    {
+        
+        if (collision.gameObject.CompareTag("MovingPlatform"))
+        {
+            isOnPlatform = null;
+        }
     }
 }
