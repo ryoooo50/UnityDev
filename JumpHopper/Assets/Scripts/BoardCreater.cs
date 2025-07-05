@@ -4,18 +4,24 @@ using UnityEngine;
 
 public class BoardCreater : MonoBehaviour
 {
-    public GameObject boardprefabs;
+    public GameObject normalboard;
+    public GameObject jumpingBoard;
+    public GameObject miniBoard;
 
-    private float distance = 2.0f;
+    private float distance = 3.0f;
+
 
 
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 1; i < 10; i++)
+        for (int i = 1; i < 7; i++)
         {
-            Instantiate(boardprefabs, new Vector3(distance * i, distance * i, distance * i), Quaternion.identity);
+            Instantiate(normalboard, new Vector3(distance * i, distance * i, distance * i), Quaternion.identity);
         }
+
+        Instantiate(jumpingBoard, new Vector3(30f, 23f, 30f), Quaternion.identity);
+        Instantiate(jumpingBoard, new Vector3(34f, 29f, 34f), Quaternion.identity);
         
     }
 

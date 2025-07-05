@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Jumping : MonoBehaviour
 {
-    public float jumpForce = 5f;
+    public float jumpForce = 6f;
+    private float jumpingBoard = 25f;
     public float moveDistance = 1f;
     public LayerMask groundLayer;   //地面のレイヤー
     public Transform groundCheck;   //地面のチェック     public float groundCheckRadius = 0.2f;   //接地判定の半径
@@ -56,12 +57,34 @@ public class Jumping : MonoBehaviour
         
         rb.MovePosition(rb.position + move + platformDelta);
     }
+    private bool hasJumpedFromPlatform = false;
 
     private void OnCollisionStay(Collision collision) 
     {
         if (collision.gameObject.CompareTag("MovingPlatform"))
         {
             isOnPlatform = collision.gameObject.GetComponent<BoardDriven>();
+        }
+
+        if (collision.gameObject.CompareTag("JumpingPlatform"))
+        {
+            foreach (ContactPoint contact in collision.contacts)
+            {
+                // 接触した面の法線
+                Vector3 normal = contact.normal;
+
+                // 法線が上向き（0.7 以上にしておくと多少の斜面にも対応）Dot(a,b)は内積
+                if (Vector3.Dot(normal, Vector3.up) > 0.7f)
+                {
+                    if (!hasJumpedFromPlatform)
+                    {
+                        rb.AddForce(Vector3.up * jumpingBoard, ForceMode.Impulse);
+                        hasJumpedFromPlatform = true;
+                    }
+                    break; // 一度ジャンプしたらループを抜ける
+                    
+                }
+            }
         }
         
     }
@@ -71,6 +94,11 @@ public class Jumping : MonoBehaviour
         if (collision.gameObject.CompareTag("MovingPlatform"))
         {
             isOnPlatform = null;
+        }
+
+        if (collision.gameObject.CompareTag("JumpingPlatform"))
+        {
+            hasJumpedFromPlatform = false;
         }
     }
 }
