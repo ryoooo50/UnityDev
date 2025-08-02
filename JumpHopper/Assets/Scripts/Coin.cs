@@ -6,6 +6,7 @@ using UnityEngine;
 public class Coin : MonoBehaviour
 {
     public GameObject coinEffectPrefab;
+    public AudioClip coinPickupSound;
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -20,11 +21,26 @@ public class Coin : MonoBehaviour
             {
                 // Instantiate the coin effect at the coin's position
                 GameObject effectInstance = Instantiate(coinEffectPrefab, transform.position, Quaternion.identity);
-                Destroy(gameObject, 2.0f);
+                Destroy(effectInstance, 2.0f);
+            }
+
+            if (coinPickupSound != null)
+            {
+                GameObject audioObject = new GameObject("CoinPickupAudio");
+                audioObject.transform.position = transform.position;
+        
+                AudioSource audioSource = audioObject.AddComponent<AudioSource>();
+
+                audioSource.clip = coinPickupSound;
+
+                audioSource.Play();
+
+                Destroy(audioObject, coinPickupSound.length);
+                Debug.Log("Coin pickup sound played.");
             }
 
             Destroy(gameObject);
-            
+
         }
     }
 }

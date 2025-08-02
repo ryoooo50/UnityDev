@@ -360,11 +360,13 @@
 "Assets/Scripts/BoardCreater.cs"
 "Assets/Scripts/BoardDriven.cs"
 "Assets/Scripts/BoardMoveUpDown.cs"
+"Assets/Scripts/CameraController.cs"
 "Assets/Scripts/Coin.cs"
 "Assets/Scripts/GameManager.cs"
 "Assets/Scripts/HPBarController.cs"
 "Assets/Scripts/Jumping.cs"
 "Assets/Scripts/JumpingBoard.cs"
+"Assets/Scripts/ObjectCreater.cs"
 "Assets/Scripts/PlayerController.cs"
 "Assets/Scripts/PlayerControls.cs"
 -langversion:9.0
