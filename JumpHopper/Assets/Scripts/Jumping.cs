@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class Jumping : MonoBehaviour
 {
+    [Header("Jump Settings")]
     public float jumpForce = 6f;
-    private float jumpingBoard = 12f;
-    public float moveDistance = 1f;
+    public float jumpingBoard = 12f;
+    [Header("Movement Settings")]
+    public float playerSpeed = 5f;
+    [Header("Other Settings")]
     public LayerMask groundLayer;   //地面のレイヤー
     public Transform groundCheck;   //地面のチェック     public float groundCheckRadius = 0.2f;   //接地判定の半径
     public float groundCheckRadius = 0.2f; // 接地判定の半径
     private Rigidbody rb;
-    public float speed = 5f;
+    
     private float horizontal;
     private float vertical;
     private bool isGrounded;
@@ -64,8 +67,10 @@ public class Jumping : MonoBehaviour
             animator.SetBool("isMoving", isMoving);
         }
         // Debug.Log("Is Moving: " + isMoving);
+
+        bool ps4JumpButton = Input.GetKeyDown(KeyCode.Joystick1Button1); // PS4のジャンプボタン（○ボタン）
         //スペースキーでジャンプ
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space) || ps4JumpButton && isGrounded)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
 
@@ -81,7 +86,7 @@ public class Jumping : MonoBehaviour
 
     void FixedUpdate() 
     {
-        Vector3 move = new Vector3(horizontal, 0f, vertical) * speed * Time.fixedDeltaTime;
+        Vector3 move = new Vector3(horizontal, 0f, vertical) * playerSpeed * Time.fixedDeltaTime;
 
         Vector3 platformDelta = Vector3.zero;
         if (isOnPlatform != null && isGrounded)

@@ -8,7 +8,7 @@ public class HPBarController : MonoBehaviour
 {
 
     [Header("HPゲージUI要素")]
-    [SerializeField] private Image hpBarFillImage; // HPバー本体のImage
+    [SerializeField] private Slider hpSlider; // HPバー本体のImage
     [SerializeField] private TextMeshProUGUI hpText; // HP数値を表示するTextMeshProUGUI
 
     [Header("HP設定")]
@@ -18,17 +18,17 @@ public class HPBarController : MonoBehaviour
     void Start()
     {
         currentHP = maxHP; // 初期HPを最大HPに設定
-        UpdatteHPUI(); 
+        UpdateHPUI(); 
     }
 
     public void SetHP(float newHP)
     {
         // HPが最大値を超えないように制限
         currentHP = Mathf.Clamp(newHP, 0, maxHP);
-        UpdatteHPUI();
+        UpdateHPUI();
     }
 
-    public void TakeDamage(float damageAmount)
+    public void TakeDamage(int damageAmount)
     {
         SetHP(currentHP - damageAmount);
         Debug.Log($"ダメージを受けた: {damageAmount}. 現在のHP: {currentHP}");
@@ -37,6 +37,7 @@ public class HPBarController : MonoBehaviour
             Debug.Log("Game Over");
             // ここに死亡時の処理を追加
         }
+        UpdateHPUI();
     }
     public void Heal(float healAmount)
     {
@@ -44,10 +45,10 @@ public class HPBarController : MonoBehaviour
         Debug.Log($"回復: {healAmount}. 現在のHP: {currentHP}");
     }
 
-    private void UpdatteHPUI()
+    private void UpdateHPUI()
     {
         // HPバーのFillAmountを更新
-        hpBarFillImage.fillAmount = currentHP / maxHP;
+        hpSlider.value = currentHP / maxHP;
         // HP数値を更新
         hpText.text = $"{currentHP:F0}/{maxHP:F0}";
     }
