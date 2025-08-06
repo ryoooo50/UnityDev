@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
     {
         percent = Mathf.Clamp01(percent);
 
-        var rt = healthBar.rectTransform;
-        rt.sizeDelta = new Vector2(200 * percent,rt.sizeDelta.y);
+        // var rt = healthBar.rectTransform;
+        // rt.sizeDelta = new Vector2(200 * percent,rt.sizeDelta.y);
     }
 }
